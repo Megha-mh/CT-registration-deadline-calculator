@@ -2,7 +2,7 @@ import streamlit as st
 from datetime import datetime, timedelta
 
 # Add a logo from the local system at the top of the app
-st.image("https://github.com/Megha-mh/CT-registration-deadline-calculator/blob/main/Full%20Logo%20(1).png", width=200)  # Adjust the path and width as necessary
+st.image("https://raw.githubusercontent.com/Megha-mh/CT-registration-deadline-calculator/main/Full%20Logo%20(1).png", width=200)  # Adjust the path and width as necessary
 
 # Custom CSS to add more space above the main heading, reduce header size, add borders, and make headings bold
 st.markdown("""
