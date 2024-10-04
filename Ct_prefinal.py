@@ -1,12 +1,12 @@
 import streamlit as st
 from datetime import datetime, timedelta
 
-# Custom CSS to add more space above the main heading, reduce header size, add borders, make headings bold, and adjust logo
+# Custom CSS to add more space above the main heading, reduce header size, add borders, and make headings bold
 st.markdown("""
     <style>
     h2 {
         font-size: 28px;
-        margin-top: 20px; /* Adjust margin for the main heading */
+        margin-top: 40px; /* Increase space above the heading by 2cm */
     }
     h3 {
         font-size: 24px;
@@ -24,14 +24,7 @@ st.markdown("""
         margin-bottom: 10px;
         font-weight: bold;
     }
-
-    /* Adjust logo positioning */
-    .logo-container {
-        position: relative;
-        top: -30px; /* Move the logo upwards */
-        left: -30px; /* Move the logo to the left */
-    }
-
+    
     /* Style the button */
     div.stButton > button {
         background-color: #2B547E; /* Professional dark blue color */
@@ -62,13 +55,6 @@ st.markdown("""
         background-color: #45a049;
     }
     </style>
-""", unsafe_allow_html=True)
-
-# Add logo and title
-st.markdown("""
-    <div class="logo-container">
-        <img src="https://your-logo-url-here" alt="Finanshels Logo" width="150"/>
-    </div>
 """, unsafe_allow_html=True)
 
 # Title for the app
