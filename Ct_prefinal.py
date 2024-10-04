@@ -1,6 +1,9 @@
 import streamlit as st
 from datetime import datetime, timedelta
 
+# Add a logo from the local system at the top of the app
+st.image("https://raw.githubusercontent.com/Megha-mh/CT-registration-deadline-calculator/main/Full%20Logo%20(1).png", width=200)  # Adjust the path and width as necessary
+
 # Custom CSS to add more space above the main heading, reduce header size, add borders, and make headings bold
 st.markdown("""
     <style>
@@ -37,22 +40,6 @@ st.markdown("""
     }
     div.stButton > button:hover {
         background-color: #3C6E9C; /* Slightly lighter blue when hovered */
-    }
-
-    /* Copy button styling */
-    .copy-btn {
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        margin-top: 10px;
-    }
-
-    .copy-btn:hover {
-        background-color: #45a049;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -144,7 +131,7 @@ with col2:
                     if input_date < threshold_date:
                         # Template for before March 1
                         message = f"""
-Greetings {company_name} Team,
+Greetings {company_name} Team ,
 
 It has come to our notice that your license issue date is {input_date.strftime('%d/%m/%Y')} and the deadline for {input_date.strftime('%B')} licenses is {calculated_date.strftime('%d/%m/%Y')}. We regret to inform you that there is a chance of a late registration penalty of AED 10,000 imposed on the license.
 
@@ -159,7 +146,7 @@ Thanks.
                     else:
                         # Template for after March 1
                         message = f"""
-Greetings {company_name} Team,
+Greetings {company_name} Team ,
 
 It has come to our notice that your license issue date is {input_date.strftime('%d/%m/%Y')} and the deadline for the license is {calculated_date.strftime('%d/%m/%Y')}, which is 90 days from the date of incorporation. We regret to inform you that there is a chance of a late registration penalty of AED 10,000 imposed on the license.
 
@@ -172,16 +159,8 @@ Kindly confirm if we can proceed with the registration.
 Thanks.
                         """
 
-                    # Display the template message
-                    st.markdown(f"<div class='box'>{message}</div>", unsafe_allow_html=True)
-
-                    # Copy to Clipboard Button
-                    copy_button = f"""
-                    <button class="copy-btn" onclick="navigator.clipboard.writeText(`{message.replace("`", "\\`")}`);">
-                        Copy to Clipboard
-                    </button>
-                    """
-                    st.markdown(copy_button, unsafe_allow_html=True)
+                    # Display the formatted message using text_area for easy copying
+                    st.text_area("Template Message", value=message, height=300)
             
             else:
                 st.markdown('<div class="box">The registration is not past due date.</div>', unsafe_allow_html=True)
