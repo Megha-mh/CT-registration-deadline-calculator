@@ -1,15 +1,26 @@
 import streamlit as st
 from datetime import datetime, timedelta
 
-# Add a logo from the local system at the top of the app
-st.image("https://raw.githubusercontent.com/Megha-mh/CT-registration-deadline-calculator/main/Full%20Logo%20(1).png", width=200)  # Adjust the path and width as necessary
+# Custom CSS to adjust the position of the logo
+st.markdown("""
+    <style>
+    .logo {
+        position: relative;
+        left: -30px; /* Move left */
+        top: -20px; /* Move up */
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Add a logo from GitHub raw URL, wrapped in a div with the class 'logo'
+st.markdown('<div class="logo"><img src="https://raw.githubusercontent.com/Megha-mh/CT-registration-deadline-calculator/main/Full%20Logo%20(1).png" width="200"></div>', unsafe_allow_html=True)
 
 # Custom CSS to add more space above the main heading, reduce header size, add borders, and make headings bold
 st.markdown("""
     <style>
     h2 {
         font-size: 28px;
-        margin-top: 40px; /* Increase space above the heading by 2cm */
+        margin-top: 20px; /* Adjust the margin to move the heading upward */
     }
     h3 {
         font-size: 24px;
