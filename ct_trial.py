@@ -1,16 +1,26 @@
 import streamlit as st
 from datetime import datetime, timedelta
 
-# Add a logo from the local system at the top of the app
-st.markdown('<div class="logo"><img src="https://raw.githubusercontent.com/Megha-mh/CT-registration-deadline-calculator/main/Full%20Logo%20(1).png" width="200"></div>', unsafe_allow_html=True)
+# Custom CSS to adjust the position of the logo
+st.markdown("""
+    <style>
+    .logo {
+        position: relative;
+        left: -30px; /* Move left */
+        top: -20px; /* Move up */
+    }
+    </style>
+""", unsafe_allow_html=True)
 
+# Add a logo from GitHub raw URL, wrapped in a div with the class 'logo'
+st.markdown('<div class="logo"><img src="https://raw.githubusercontent.com/Megha-mh/CT-registration-deadline-calculator/main/Full%20Logo%20(1).png" width="200"></div>', unsafe_allow_html=True)
 
 # Custom CSS to add more space above the main heading, reduce header size, add borders, and make headings bold
 st.markdown("""
     <style>
     h2 {
         font-size: 28px;
-        margin-top: 40px; /* Increase space above the heading by 2cm */
+        margin-top: 20px; /* Adjust the margin to move the heading upward */
     }
     h3 {
         font-size: 24px;
@@ -122,6 +132,9 @@ elif option == "Check Deadline and Get Template":
                 if deadline:
                     calculated_date = datetime.strptime(deadline, "%d %b %Y").date()
 
+            # Display the calculated deadline
+            st.markdown(f"<h3>{calculated_date.strftime('%B %d, %Y')}</h3>", unsafe_allow_html=True)
+
             # Get the current date
             current_date = datetime.today().date()
 
@@ -132,16 +145,38 @@ elif option == "Check Deadline and Get Template":
                 
                 # Button to show the template message
                 if st.button("Get Template"):
-                    message = f"""
+                    # Before March 1 template
+                    if input_date < threshold_date:
+                        message = f"""
 Greetings {company_name} Team,
 
-It has come to our notice that your license issue date is {input_date.strftime('%d/%m/%Y')} and the deadline for the license is {calculated_date.strftime('%d/%m/%Y')}. We regret to inform you that there is a chance of a late registration penalty of AED 10,000 imposed on the license.
+It has come to our notice that your license issue date is {input_date.strftime('%d/%m/%Y')} and the deadline for {input_date.strftime('%B')} licenses is {calculated_date.strftime('%d/%m/%Y')}. We regret to inform you that there is a chance of a late registration penalty of AED 10,000 imposed on the license.
+
+We are informing you in advance to avoid any surprises if it happens. Once imposed, you will receive a message and email for the approval of your registration and the penalty.
+
+The penalty does not need to be paid immediately since it will not accumulate or grow. We will explore the possibility of requesting a waiver through the FTA and provide updates as the situation progresses.
 
 Kindly confirm if we can proceed with the registration.
 
 Thanks.
-                    """
-                    # Display the formatted message
+                        """
+                    else:
+                        # After March 1 template
+                        message = f"""
+Greetings {company_name} Team,
+
+It has come to our notice that your license issue date is {input_date.strftime('%d/%m/%Y')} and the deadline for the license is {calculated_date.strftime('%d/%m/%Y')}, which is 90 days from the date of incorporation. We regret to inform you that there is a chance of a late registration penalty of AED 10,000 imposed on the license.
+
+We are informing you in advance to avoid any surprises if it happens. Once imposed, you will receive a message and email for the approval of your registration and the penalty.
+
+The penalty does not need to be paid immediately since it will not accumulate or grow. We will explore the possibility of requesting a waiver through the FTA and provide updates as the situation progresses.
+
+Kindly confirm if we can proceed with the registration. 
+
+Thanks.
+                        """
+
+                    # Display the formatted message using text_area for easy copying
                     st.text_area("Template Message", value=message, height=300)
             else:
                 st.markdown('<div class="box">The registration is not past due date.</div>', unsafe_allow_html=True)
