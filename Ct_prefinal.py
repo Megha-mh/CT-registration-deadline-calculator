@@ -113,35 +113,38 @@ threshold_date = datetime(2024, 3, 1).date()
 with col2:
     st.markdown('<div class="smaller-heading">Deadline For Corporate Tax Registration</div>', unsafe_allow_html=True)
     
-    if date_input_str and company_name:
-        try:
-            # If input date is after March 1, 2024, apply the 90-day rule
-            if input_date > threshold_date:
-                calculated_date = input_date + timedelta(days=90)
-                st.markdown(f"<h3>{calculated_date.strftime('%B %d, %Y')}</h3>", unsafe_allow_html=True)
-            else:
-                # Apply the table rules based on the month and day (ignoring the year)
-                deadline = get_deadline_based_on_rules(input_date)
-                if deadline:
-                    calculated_date = datetime.strptime(deadline, "%d %b %Y").date()
-                    st.markdown(f"<h3>{deadline}</h3>", unsafe_allow_html=True)
+    if date_input_str:
+        if not company_name:
+            st.error("Please enter the name of the company.")  # Error if company name is not provided
+        else:
+            try:
+                # If input date is after March 1, 2024, apply the 90-day rule
+                if input_date > threshold_date:
+                    calculated_date = input_date + timedelta(days=90)
+                    st.markdown(f"<h3>{calculated_date.strftime('%B %d, %Y')}</h3>", unsafe_allow_html=True)
                 else:
-                    st.write("The selected date does not fall within the specified ranges.")
-            
-            # Get the current date
-            current_date = datetime.today().date()
-            
-            # Check if the calculated deadline is past the current date
-            if calculated_date < current_date:
-                # Inform the user that the registration is past due date
-                st.markdown('<div class="box">The registration is past due date.</div>', unsafe_allow_html=True)
+                    # Apply the table rules based on the month and day (ignoring the year)
+                    deadline = get_deadline_based_on_rules(input_date)
+                    if deadline:
+                        calculated_date = datetime.strptime(deadline, "%d %b %Y").date()
+                        st.markdown(f"<h3>{deadline}</h3>", unsafe_allow_html=True)
+                    else:
+                        st.write("The selected date does not fall within the specified ranges.")
+                
+                # Get the current date
+                current_date = datetime.today().date()
+                
+                # Check if the calculated deadline is past the current date
+                if calculated_date < current_date:
+                    # Inform the user that the registration is past due date
+                    st.markdown('<div class="box">The registration is past due date.</div>', unsafe_allow_html=True)
 
-                # Button to show the template message if the deadline has passed
-                if st.button("Get Template"):
-                    # Now generate the template message based on before or after March 1st condition
-                    if input_date < threshold_date:
-                        # Template for before March 1
-                        message = f"""
+                    # Button to show the template message if the deadline has passed
+                    if st.button("Get Template"):
+                        # Now generate the template message based on before or after March 1st condition
+                        if input_date < threshold_date:
+                            # Template for before March 1
+                            message = f"""
 Greetings {company_name} Team ,
 
 It has come to our notice that your license issue date is {input_date.strftime('%d/%m/%Y')} and the deadline for {input_date.strftime('%B')} licenses is {calculated_date.strftime('%d/%m/%Y')}. We regret to inform you that there is a chance of a late registration penalty of AED 10,000 imposed on the license.
@@ -153,10 +156,10 @@ The penalty does not need to be paid immediately since it will not accumulate or
 Kindly confirm if we can proceed with the registration.
 
 Thanks.
-                        """
-                    else:
-                        # Template for after March 1
-                        message = f"""
+                            """
+                        else:
+                            # Template for after March 1
+                            message = f"""
 Greetings {company_name} Team ,
 
 It has come to our notice that your license issue date is {input_date.strftime('%d/%m/%Y')} and the deadline for the license is {calculated_date.strftime('%d/%m/%Y')}, which is 90 days from the date of incorporation. We regret to inform you that there is a chance of a late registration penalty of AED 10,000 imposed on the license.
@@ -168,13 +171,13 @@ The penalty does not need to be paid immediately since it will not accumulate or
 Kindly confirm if we can proceed with the registration. 
 
 Thanks.
-                        """
+                            """
 
-                    # Display the formatted message using text_area for easy copying
-                    st.text_area("Template Message", value=message, height=300)
+                        # Display the formatted message using text_area for easy copying
+                        st.text_area("Template Message", value=message, height=300)
+                
+                else:
+                    st.markdown('<div class="box">The registration is not past due date.</div>', unsafe_allow_html=True)
             
-            else:
-                st.markdown('<div class="box">The registration is not past due date.</div>', unsafe_allow_html=True)
-            
-        except NameError:
-            st.error("Please enter a valid date.")
+            except NameError:
+                st.error("Please enter a valid date.")
