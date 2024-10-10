@@ -14,7 +14,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Add a logo from GitHub raw URL, wrapped in a div with the class 'logo'
-st.image("C:/Users/Varun/Downloads/Full Logo (1).png", width=200)
+st.markdown('<div class="logo"><img src="https://raw.githubusercontent.com/Megha-mh/CT-registration-deadline-calculator/main/Full%20Logo%20(1).png" width="200"></div>', unsafe_allow_html=True)
 
 # Custom CSS to add more space above the main heading, reduce header size, add borders, and make headings bold
 st.markdown("""
