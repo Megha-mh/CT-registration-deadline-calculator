@@ -1,5 +1,6 @@
 import streamlit as st
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta  # Import relativedelta
 
 # Custom CSS to adjust the position of the logo
 st.markdown("""
@@ -13,7 +14,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Add a logo from GitHub raw URL, wrapped in a div with the class 'logo'
-st.markdown('<div class="logo"><img src="https://raw.githubusercontent.com/Megha-mh/CT-registration-deadline-calculator/main/Full%20Logo%20(1).png" width="200"></div>', unsafe_allow_html=True)
+st.image("C:/Users/Varun/Downloads/Full Logo (1).png", width=200)
 
 # Custom CSS to add more space above the main heading, reduce header size, add borders, and make headings bold
 st.markdown("""
@@ -106,7 +107,7 @@ def get_deadline_based_on_rules(input_date):
         return "31 Dec 2024"
     return None
 
-# Define the threshold date for 90-day rule
+# Define the threshold date for the 3-month rule
 threshold_date = datetime(2024, 3, 1).date()
 
 # Display the calculated date in the second column with smaller heading
@@ -118,9 +119,9 @@ with col2:
             st.error("Please enter the name of the company.")  # Error if company name is not provided
         else:
             try:
-                # If input date is after March 1, 2024, apply the 90-day rule
+                # If input date is after March 1, 2024, apply the 3-month rule
                 if input_date > threshold_date:
-                    calculated_date = input_date + timedelta(days=90)
+                    calculated_date = input_date + relativedelta(months=3)  # Add 3 months
                     st.markdown(f"<h3>{calculated_date.strftime('%B %d, %Y')}</h3>", unsafe_allow_html=True)
                 else:
                     # Apply the table rules based on the month and day (ignoring the year)
@@ -145,7 +146,7 @@ with col2:
                         if input_date < threshold_date:
                             # Template for before March 1
                             message = f"""
-Greetings {company_name} Team ,
+Greetings {company_name} Team,
 
 It has come to our notice that your license issue date is {input_date.strftime('%d/%m/%Y')} and the deadline for {input_date.strftime('%B')} licenses is {calculated_date.strftime('%d/%m/%Y')}. We regret to inform you that there is a chance of a late registration penalty of AED 10,000 imposed on the license.
 
@@ -160,15 +161,15 @@ Thanks.
                         else:
                             # Template for after March 1
                             message = f"""
-Greetings {company_name} Team ,
+Greetings {company_name} Team,
 
-It has come to our notice that your license issue date is {input_date.strftime('%d/%m/%Y')} and the deadline for the license is {calculated_date.strftime('%d/%m/%Y')}, which is 90 days from the date of incorporation. We regret to inform you that there is a chance of a late registration penalty of AED 10,000 imposed on the license.
+It has come to our notice that your license issue date is {input_date.strftime('%d/%m/%Y')} and the deadline for the license is {calculated_date.strftime('%d/%m/%Y')}, which is 3 months from the date of incorporation. We regret to inform you that there is a chance of a late registration penalty of AED 10,000 imposed on the license.
 
 We are informing you in advance to avoid any surprises if it happens. Once imposed, you will receive a message and email for the approval of your registration and the penalty.
 
 The penalty does not need to be paid immediately since it will not accumulate or grow. We will explore the possibility of requesting a waiver through the FTA and provide updates as the situation progresses.
 
-Kindly confirm if we can proceed with the registration. 
+Kindly confirm if we can proceed with the registration.
 
 Thanks.
                             """
