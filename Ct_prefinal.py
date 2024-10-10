@@ -64,10 +64,10 @@ col1, col2 = st.columns([1, 2])  # Adjust ratio here (1:2 ratio)
 
 # Date input widget in the first column with smaller heading
 with col1:
-    st.markdown('<div class="smaller-heading">Trade License Issue Date</div>', unsafe_allow_html=True)
+    st.markdown('<div class="smaller-heading">Date of Incorporation</div>', unsafe_allow_html=True)
     
     # Text input for manual date entry in DD-MM-YYYY or DD/MM/YYYY format
-    date_input_str = st.text_input("Enter the Trade License Issue Date (DD-MM-YYYY or DD/MM/YYYY)", "")
+    date_input_str = st.text_input("Enter the Date of Incorporation (DD-MM-YYYY or DD/MM/YYYY)", "")
 
     # If a date is manually typed, try to parse it
     if date_input_str:
